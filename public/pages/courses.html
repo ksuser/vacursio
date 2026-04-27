@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вакурсио - Курсы</title>
+    <style>
+        :root {
+            --color-primary: #28A3B9;
+            --color-button: #8FB5E9;
+            --color-dark-text: #1f2121;
+            --color-gray-text: #626c71;
+            --color-light-gray: #e8e8e8;
+            --color-white: #ffffff;
+            --color-light-bg: #f8f8f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 14px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: var(--color-dark-text);
+            background-color: var(--color-white);
+        }
+
+        body {
+            background-color: var(--color-white);
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background-color: var(--color-primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .header__inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 200px;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .header__logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-white);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .header__nav {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);  /* центрируем по горизонтали */
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            max-width: 1280px;
+        }
+
+        .header__nav a {
+            color: var(--color-white);
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.3s ease;
+        }
+
+        .header__nav a:hover {
+            opacity: 0.8;
+        }
+
+        .header__location {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--color-white);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .header__location::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 10px;
+            background-image: url(icons/checkmark.svg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        .header__location-select {
+            border: none;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 14px;
+        }
+
+        /* Main Content */
+        main {
+            padding: 40px 20px;
+            background-color: #ffffff;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            color: #000000;
+        }
+
+        .page-title .highlight {
+            color: #8FB5E9;
+        }
+
+        /* Search Section */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .search-wrapper {
+            width: 840px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .search-input-wrapper {
+            position: relative;
+            width: 100%;
+            height: 40px;
+        }
+
+        .search-input {
+            width: 100%;
+            height: 40px;
+            padding: 0 16px;
+            padding-right: 50px;
+            border: none;
+            border-radius: 10px;
+            background-color: #EEEEEE;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #000000;
+        }
+
+        .search-input::placeholder {
+            color: #9A9A9A;
+        }
+
+        .search-input:focus {
+            outline: none;
+            background-color: #f5f5f5;
+        }
+
+        /* Search Button */
+        .search-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            border: none;
+            border-radius: 10px;
+            background-color: #8FB5E9;
+            background-image: url('icons/loupe.svg');
+            background-size: 16px 16px;
+            background-position: center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+        }
+
+        .search-btn:hover {
+            background-color: #7BA1D4;
+        }
+
+        .search-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Filter Button */
+        .filter-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: transparent;
+            background-image: url('icons/filter.svg');
+            background-position: center;
+            background-repeat: no-repeat;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
+            margin-left: 10px;
+        }
+
+        .filter-btn:hover {
+            opacity: 0.7;
+        }
+
+        .filter-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: #000000;
+            stroke-width: 2;
+        }
+
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(40, 163, 185, 0.6);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            width: 880px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #000;
+            text-align: center;
+        }
+
+        .filter-inputs-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .filter-input-wrapper {
+            position: relative;
+            width: 273px;
+        }
+
+        .filter-input {
+            width: 100%;
+            height: 40px;
+            border: 2px solid #8FB5E9;
+            border-radius: 10px;
+            background-color: white;
+            padding: 0 15px;
+            padding-right: 40px;
+            font-size: 14px;
+            color: #9A9A9A;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .filter-input::placeholder {
+            color: #9A9A9A;
+            font-size: 14px;
+        }
+
+        .filter-input:focus {
+            border-color: #7a9fd4;
+        }
+
+        .dropdown-btn {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            padding: 0;
+        }
+
+        .dropdown-btn img {
+            width: 16px;
+            height: 16px;
+            opacity: 0.6;
+        }
+
+        /* Состояние открытого dropdown: убираем нижний радиус у input */
+        .filter-input-wrapper.open .filter-input {
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        }
+
+        /* Анимация и поворот иконки dropdown */
+        .dropdown-btn img {
+        transition: transform 0.2s ease;
+        }
+
+        .filter-input-wrapper.open .dropdown-btn img {
+        transform: rotate(180deg);
+        }
+
+        /* Выпадающий список */
+        .dropdown-menu {
+        position: absolute;
+        top: calc(100% + 10px); /* отступ 10px ниже filter-input-wrapper */
+        left: 0;
+        width: 273px;
+        height: auto;
+        background-color: #FFFFFF;
+        border: none;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        box-shadow: 0 1.5px 3px rgb(0 0 0 / 30%);
+        padding: 20px;
+        overflow-y: auto;
+        display: none;
+        z-index: 10;
+        }
+
+        .dropdown-menu.open {
+        display: block;
+        }
+
+        /* Пункты внутри выпадающего списка */
+        .dropdown-option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 11px;
+        cursor: pointer;
+        font-size: 12px;
+        color: #9A9A9A;
+        }
+
+        .dropdown-option:last-child {
+        margin-bottom: 0;
+        }
+
+        /* Скрываем настоящий инпут (radio) */
+        .dropdown-option input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+        }
+
+        /* Кастомный чекбокс 15x15, radius 10px, border 1px #9A9A9A */
+        .custom-checkbox {
+        width: 15px;
+        height: 15px;
+        border-radius: 10px;
+        border: 1px solid #9A9A9A;
+        background-color: #FFFFFF;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        }
+
+        /* Внутренний кружок 5x5 */
+        .custom-checkbox::after {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 10px;
+        background-color: transparent;
+        }
+
+        /* При выборе: border и внутренний круг #28A3B9 */
+        .dropdown-option input:checked + .custom-checkbox {
+        border-color: #28A3B9;
+        }
+
+        .dropdown-option input:checked + .custom-checkbox::after {
+        background-color: #28A3B9;
+        }
+
+        .apply-btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .apply-btn {
+            width: 116px;
+            height: 30px;
+            background-color: #8FB5E9;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 1.5px 2px rgb(0 0 0 / 30%);
+        }
+
+        .apply-btn:hover {
+            background-color: #7a9fd4;
+        }
+
+        .close-btn {
+            display: none;
+        }
+
+        /* Контейнер под поиском */
+        .selected-filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;          /* расстояние между блоками 10px */
+        width: 100%;
+        max-width: 880px;   /* как у .search-wrapper */
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+        }
+
+        /* Один блок выбранного фильтра */
+        .filter-tag {
+        display: inline-flex;
+        align-items: center;
+        height: 25px;
+        padding: 5px 20px;
+        border: 2px solid #8FB5E9;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 400;
+        color: #000000;
+        background-color: #FFFFFF;
+        box-sizing: border-box;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 999;
+        }
+
+        .loading-spinner.active {
+            display: block;
+        }
+
+        .loading-spinner img {
+            width: 106.7px;
+            height: 106.7px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Контейнер с результатами под selected-filters */
+        .results-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;       /* расстояние между блоками 20px */
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 880px;
+        }
+
+        /* Один блок результата */
+        .result-card {
+        width: 880px;
+        height: 239px;
+        border-radius: 20px;
+        background-color: #F5F7FF;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        position: relative; /* нужно для позиционирования кнопки от низа */
+        box-shadow: 6px 6px 10px rgb(0 0 0 / 10%);
+        }
+
+        /* 1-я строка: "Компания: *название*" */
+        .company-text {
+        font-size: 14px;
+        font-weight: 400;
+        margin: 0;
+        }
+
+        .company-label {
+        color: #000000;
+        }
+
+        .company-name {
+        color: #8FB5E9;
+        }
+
+        /* 2-й текст: через 15px */
+        .result-title {
+        margin: 5px 0 0;
+        font-size: 24px;
+        font-weight: 500;
+        color: #000000;
+        }
+
+        /* 3-й текст: ещё через 15px */
+        .result-subtitle {
+        margin: 5px 0 0;
+        font-size: 20px;
+        font-weight: 400;
+        color: #000000;
+        }
+
+        /* 4-й текст: ещё через 20px */
+        .result-extra {
+        margin: 10px 0 0;
+        font-size: 14px;
+        font-weight: 400;
+        color: #000000;
+        }
+
+        /* Кнопка "подробнее" — как "применить", но внизу слева */
+        .more-btn {
+        position: absolute;
+        left: 20px;
+        bottom: 20px;      /* на 20px выше от низа блока (учитывая padding) */
+        height: 30px;
+        line-height: 30px;
+        padding: 0 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .search-wrapper {
+                width: 100%;
+                max-width: 840px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .header-nav {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .search-wrapper {
+                flex-direction: column;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__inner">
+            <a href="#" class="header__logo">Вакурсио</a>
+            <nav class="header__nav">
+                <a href="/vacancies">Вакансии</a>
+                <a href="/internships">Стажировки</a>
+                <a href="/courses">Курсы</a>
+            </nav>
+            <select id="citySelect" class="header__location-select"></select>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <h2 class="page-title">Поиск <span class="highlight">курсов</span></h2>
+
+        <!-- Search Section -->
+        <div class="search-container">
+            <div style="display: flex; align-items: center;">
+                <div class="search-wrapper">
+                    <div class="search-input-wrapper">
+                        <input 
+                            type="text" 
+                            class="search-input" 
+                            placeholder="название курса"
+                        >
+                        <button class="search-btn" aria-label="Поиск"></button>
+                    </div>
+                </div>
+                <button class="filter-btn" aria-label="Фильтры"></button>
+            </div>
+        </div>
+
+        <div class="selected-filters" id="selectedFilters"></div>
+        <div style="display:flex;justify-content:center;margin-bottom:20px;">
+            <button id="exportBtn" class="apply-btn" type="button" disabled>экспорт в xlsx</button>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <img src="icons/loading.svg" alt="Загрузка">
+        </div>
+
+        <div class="results-container" id="resultsContainer"></div>
+
+        <!-- Модальное окно фильтра -->
+        <div class="modal" id="filterModal">
+            <div class="modal-content">
+                <div class="modal-title">Фильтры</div>
+                
+                <div class="filter-inputs-container">
+                    <div class="filter-input-wrapper">
+                        <input type="text" class="filter-input" placeholder="формат" readonly>
+                        <button class="dropdown-btn" type="button">
+                            <img src="icons/checkmark1.svg" alt="dropdown">
+                        </button>
+
+                        <div class="dropdown-menu">
+                        <label class="dropdown-option">
+                            <input type="radio" name="format" value="онлайн">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">онлайн</span>
+                        </label>
+
+                        <label class="dropdown-option">
+                            <input type="radio" name="format" value="офлайн">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">офлайн</span>
+                        </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-input-wrapper">
+                        <input type="text" class="filter-input" placeholder="стоимость" readonly>
+                        <button class="dropdown-btn" type="button">
+                            <img src="icons/checkmark1.svg" alt="dropdown">
+                        </button>
+
+                        <div class="dropdown-menu">
+                        <label class="dropdown-option">
+                            <input type="radio" name="cost" value="бесплатно">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">бесплатно</span>
+                        </label>
+
+                        <label class="dropdown-option">
+                            <input type="radio" name="cost" value="платно">
+                            <span class="custom-checkbox"></span>
+                            <span class="option-label">платно</span>
+                        </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="apply-btn-container">
+                    <button class="apply-btn">применить</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="cookieBanner" style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:#fff;border:1px solid #ddd;border-radius:10px;padding:12px;z-index:1200;max-width:900px;">
+        Мы используем cookie-файлы для сохранения в браузере Ваших действий на сайте в течение двух суток. Нажмите, чтобы подтвердить
+        <button id="cookieOkBtn" class="apply-btn" style="margin-left:10px;height:28px;">ок</button>
+    </div>
+    <script>window.__PAGE_TYPE__ = "courses";</script>
+    <script src="/js/legacy-search.js"></script>
+</body>
+</html>

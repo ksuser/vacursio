@@ -1,0 +1,48 @@
+:root {
+  --color-primary: #28a3b9;
+  --color-button: #8fb5e9;
+  --color-dark-text: #1f2121;
+  --color-white: #ffffff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Inter, Arial, sans-serif; background: #fff; color: #000; }
+
+.header { background: var(--color-primary); padding: 16px 24px; color: #fff; }
+.header__inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.header__logo { color: #fff; text-decoration: none; font-size: 24px; font-weight: 700; }
+.header__nav { display: flex; gap: 16px; }
+.header__nav a { color: #fff; text-decoration: none; }
+.city-select { border: none; border-radius: 8px; padding: 6px 10px; }
+
+main { max-width: 1000px; margin: 0 auto; padding: 24px; }
+.page-title { text-align: center; margin-bottom: 18px; }
+.highlight { color: var(--color-button); }
+
+.search-row { display: flex; gap: 8px; margin-bottom: 10px; }
+.search-input { flex: 1; padding: 11px; border-radius: 10px; border: 1px solid #ddd; }
+.btn { border: none; background: var(--color-button); color: #fff; border-radius: 10px; padding: 10px 14px; cursor: pointer; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.filters { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+.filters select { padding: 10px; border-radius: 10px; border: 1px solid #ddd; min-width: 190px; }
+
+.results-container { display: flex; flex-direction: column; gap: 12px; }
+.result-card { background: #f5f7ff; border-radius: 16px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+.result-card h3 { margin: 6px 0; }
+.result-meta { color: #555; font-size: 14px; margin-top: 4px; }
+
+.cookie-banner {
+  position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+  background: #fff; border: 1px solid #ddd; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,.15);
+  width: min(90vw, 720px); padding: 14px; display: none; z-index: 99;
+}
+.cookie-banner.visible { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+
+.message { margin: 12px 0; color: #555; }
+
+@media (max-width: 768px) {
+  .header__inner { flex-wrap: wrap; }
+  .search-row { flex-direction: column; }
+  .filters select { min-width: 100%; }
+}

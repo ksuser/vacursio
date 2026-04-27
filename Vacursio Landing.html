@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вакурсио - поиск профессиональных возможностей</title>
+    <style>
+        :root {
+            --color-primary: #28A3B9;
+            --color-button: #8FB5E9;
+            --color-dark-text: #1f2121;
+            --color-gray-text: #626c71;
+            --color-light-gray: #e8e8e8;
+            --color-white: #ffffff;
+            --color-light-bg: #f8f8f8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 14px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: var(--color-dark-text);
+            background-color: var(--color-white);
+        }
+
+        body {
+            background-color: var(--color-white);
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background-color: var(--color-primary);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .header__inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 200px;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .header__logo {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--color-white);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .header__nav {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);  /* центрируем по горизонтали */
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            max-width: 1280px;
+        }
+
+        .header__nav a {
+            color: var(--color-white);
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.3s ease;
+        }
+
+        .header__nav a:hover {
+            opacity: 0.8;
+        }
+
+        .header__location {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--color-white);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .header__location::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 10px;
+            background-image: url(icons/checkmark.svg);
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+        }
+
+        /* ===== HERO TITLE ===== */
+        .hero-title {
+            padding: 60px 200px 40px;
+            text-align: center;
+            background-color: var(--color-white);
+        }
+
+        .hero-title__heading {
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 1.3;
+            color: var(--color-dark-text);
+        }
+
+        .hero-title__highlight {
+            color: var(--color-button);
+        }
+
+        .hero-title__emoji {
+            font-size: 28px;
+            margin-left: 8px;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            padding: 0px 200px;
+            display: grid;
+            grid-template-columns: 480px 300px;
+            gap: 100px;
+            /* align-items: center; */
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .hero__content {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            line-height: 1.2;
+        }
+
+        .hero__description {
+            font-size: 16px;
+            color: #747474;
+            font-weight: 400;
+        }
+
+        .hero__description-main {
+            color: #000000;
+            margin-bottom: 12px;
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .hero__description-main__highlight {
+            color: var(--color-button);
+            font-weight: 700;
+        }
+
+
+        .hero__buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn--primary {
+            background-color: var(--color-button);
+            color: var(--color-white);
+            width: 300px;
+            height: 50px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .btn--primary:hover {
+            background-color: #7aa5d9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(143, 181, 233, 0.4);
+        }
+
+        /* ===== HOW IT WORKS ===== */
+        .how-it-works {
+            padding: 60px 200px;
+            max-width: 1280px;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        .how-it-works__title {
+            font-size: 24px;
+            font-weight: 600;
+            text-align: center;
+            padding-bottom: 40px;
+            color: var(--color-dark-text);
+        }
+
+        .how-it-works__text {
+            font-size: 16px;
+            font-weight: 400;
+            color: #747474;
+            margin-bottom: 60px;
+            line-height: 1.2;
+            width: 478px;
+        }
+
+        .how-it-works__text__main {
+            font-size: 20px;
+            color: #000000;
+            width: 360px;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: 493px 441px;
+            gap: 40px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .step {
+            display: flex;
+            gap: 40px;
+            max-height: 200px;
+        }
+
+        .step__number {
+            min-width: 200px;
+            height: 200px;
+            background-color: var(--color-primary);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 128px;
+            font-weight: 700;
+            color: var(--color-white);
+            flex-shrink: 0;
+        }
+
+        .step__content {
+            padding-top: 10px;
+            justify-content: center;
+            color: #747474;
+        }
+
+        .step__title {
+            max-width: 198px;
+            font-size: 16px;
+            font-weight: 400;
+            color: #000000;
+        }
+
+        .step__description {
+            font-size: 14px;
+            line-height: 1.3;
+            color: var(--color-gray-text);
+        }
+
+        /* ===== FOOTER SPACING ===== */
+        .footer-spacing {
+            padding: 40px;
+            text-align: center;
+            color: var(--color-gray-text);
+            font-size: 12px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding: 60px 100px;
+            }
+
+            .hero-title {
+                padding: 60px 100px;
+            }
+
+            .steps {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .header {
+                padding: 0 30px;
+            }
+
+            .hero-title__heading {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .header {
+                padding: 0 20px;
+                height: 60px;
+            }
+
+            .header__nav {
+                gap: 20px;
+                font-size: 12px;
+            }
+
+            .hero {
+                padding: 40px 20px;
+                gap: 30px;
+            }
+
+            .hero__title {
+                font-size: 22px;
+            }
+
+            .hero__buttons {
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 12px 24px;
+                font-size: 14px;
+                width: 100%;
+                height: auto;
+            }
+
+            .how-it-works {
+                padding: 60px 20px;
+            }
+
+            .how-it-works__title {
+                font-size: 22px;
+            }
+
+            .steps {
+                gap: 20px;
+            }
+
+            .step {
+                gap: 16px;
+            }
+
+            .step__number {
+                min-width: 100px;
+                height: 100px;
+                font-size: 48px;
+            }
+        }
+
+        /* ===== FOCUS & ACCESSIBILITY ===== */
+        .btn:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        a:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header__inner">
+            <a href="#" class="header__logo">Вакурсио</a>
+            <nav class="header__nav">
+                <a href="Job Search Page.html">Вакансии</a>
+                <a href="#internships">Стажировки</a>
+                <a href="#courses">Курсы</a>
+            </nav>
+            <div class="header__location">Москва</div>
+        </div>
+    </header>
+
+    <!-- HERO TITLE -->
+    <div class="hero-title">
+        <h1 class="hero-title__heading">
+            Привет, это <span class="hero-title__highlight">Вакурсио</span>!<span class="hero-title__emoji"></span>
+        </h1>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="hero">
+        <div class="hero__content">
+            <p class="hero__description">
+                <span class="hero__description-main"><span class="hero__description-main__highlight">Вакурсио</span> - ваш персональный помощник в поиске профессиональных и образовательных возможностей</span>
+                <br><br>
+                Сервис собирает актуальные предложения с ведущих образовательных платформ и рекрутмент-сервисов, экономя ваше время. Одна платформа, три направления развития — всё, что нужно для успешного старта и роста в карьере.
+            </p>
+        </div>
+
+        <div class="hero__buttons">
+            <a href="Job Search Page.html">
+                <button class="btn btn--primary">работа</button>
+            </a>
+            <button class="btn btn--primary">стажировки</button>
+            <button class="btn btn--primary">курсы</button>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-it-works">
+        <h2 class="how-it-works__title">Как это работает?</h2>
+        
+        <p class="how-it-works__text">
+            <span class="how-it-works__text__main">Найти работу, стажировку или курс — в 3 простых шага</span><br>
+            Введите запрос, настройте фильтры и получите подборку релевантных предложений.
+        </p>
+
+        <div class="steps">
+            <div class="step">
+                <div class="step__number">1</div>
+                <div class="step__content">
+                    <h3 class="step__title">Введите, что ищете</h3>
+                    <p class="step__description">В строке поиска напишите должность, направление или курс (пример: «Junior UX», «стажировка маркетинга», «курсы Python»).</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step__number">2</div>
+                <div class="step__content">
+                    <h3 class="step__title">Настройте фильтры</h3>
+                    <p class="step__description">Выберите необходимый опыт работы, тип занятости, график работы (для поиска вакансий или стажировок) или формат обучения/его стоимость (для курсов) — так мы сузим подбор до релевантных вариантов.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step__number">3</div>
+                <div class="step__content">
+                    <h3 class="step__title">Нажмите «Поиск» и получите подборку</h3>
+                    <p class="step__description">Мы собираем предложения с нескольких платформ и показываем подходящие вакансии, стажировки или курсы, просмотрите результаты поиска и перейдите по ссылке на первоисточник понравившихся предложений.</p>
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step__number">4</div>
+                <div class="step__content">
+                    <h3 class="step__title" style="font-weight: 700;">Готово!</h3>
+                    <p class="step__description"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer-spacing">
+        2026
+    </div>
+</body>
+</html>
